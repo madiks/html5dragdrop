@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>HTML5 JS Drag and Drop</title>
+        <link href="css/main.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="css/jquery-ui.css">
+        <link rel="stylesheet" href="redactor/9.2.2/plugins/modal/mymodal.css" />
+        <link rel="stylesheet" href="redactor/9.2.2/redactor.css" />
+    </head>
+    <body>
+        <header tabindex="0">
+            <h2>HTML5 JS Drag and Drop</h2>
+            <a  href="http://www.script-tutorials.com/html5-drag-and-drop-sorting-photos/" class="stuts">Back to original tutorial on <span>Script Tutorials</span></a>
+        </header>
+
+        <div class="albums">
+            <!-- <div class="album" id="drop_1" droppable="true"><h2>Album 1</h2></div>
+            <div class="album" id="drop_2" droppable="true"><h2>Album 1</h2></div> -->
+            <div class="paper"> 
+                <iframe src="iframe_inner.html" id="paper" frameborder="0" id="iframe_html" class="inner_html" height="2000" >
+               
+                </iframe>
+            </div>
+        </div>
+
+
+        <div class="gallery">
+            <a id="1" class="draggable" ><img src="images/1.jpg"></a>
+            <a id="2" class="draggable" ><img src="images/2.jpg"></a>
+            <a id="3" class="draggable" ><img src="images/3.jpg"></a>
+            <a id="4" class="draggable" ><img src="images/4.jpg"></a>
+            <a id="5" class="draggable" ><img src="images/5.jpg"></a>
+            <a id="6" class="draggable" ><img src="images/6.jpg"></a>
+            <a id="7" class="draggable" ><img src="images/7.jpg"></a>
+            <a id="8" class="draggable" ><img src="images/8.jpg"></a>
+            <a id="9" class="draggable" ><img src="images/9.jpg"></a>
+            <a id="10" class="draggable" ><img src="images/10.jpg"></a>
+            <a id="11" class="draggable" ><img src="images/11.jpg"></a>
+            <a id="12" class="draggable" ><img src="images/12.jpg"></a>
+        </div>
+      
+        <script src="js/jquery.min.js"></script>
+        <script src="js/jquery-ui.js"></script>
+            <script src="redactor/9.2.2/redactor.min.js"></script>
+            <script src="redactor/9.2.2/lang/zh_cn.js"></script> 
+            <!--redactor plugins-->
+            <script src="redactor/9.2.2/plugins/modal/mymodal.js"></script>
+            <script src="redactor/9.2.2/plugins/advanced/chaptersplit.js"></script>
+            <script src="redactor/9.2.2/plugins/fontcolor/fontcolor.js"></script>
+            <!-- colorpicker、dropdownlist from redactor-->
+            <script src="editor_v2/js/colorpicker.js"></script>
+            <script src="editor_v2/js/dropdownlist.js"></script>
+        <script>
+        var drag_in = false;
+        $(".draggable").draggable({
+          appendTo: ".paper",
+          helper: "clone",
+          iframeFix: true,
+          drag: function(event,ui){
+            dragOver(event,ui);
+          }
+        });
+
+        $("#paper").droppable({
+            accept: ".draggable",
+            activeClass: "drop-state-highlight",
+            greedy: true,
+            tolerance: "fit",
+            drop: function(event, ui) {
+                dropAction(ui, event);
+            },
+            over: function(event, ui){
+                drag_in = true;
+            },
+            out: function(event, ui){
+                drag_in = false;
+            }
+        });
+
+        function dropAction(ui, event){
+            console.log(ui.draggable.context.id);
+            console.log( "dropped" );
+
+            var mp = document.getElementById("paper").contentDocument.getElementById("mark_position");
+            if (mp != null){
+                mp.parentNode.removeChild(mp);
+            }
+
+            var data = getIframeElem(ui, event);
+            
+           
+
+            if(data.status){
+                //console.log(data.target);
+                if (data.position == 'after') {
+                    $(data.target).after(ui.draggable.context.outerHTML);
+                } else if (data.position == 'before'){
+                    $(data.target).before(ui.draggable.context.outerHTML);
+                }
+            }
+           
+        }
+
+        function dragOver(event,ui){
+            if(drag_in){
+                console.log('over');
+                //console.log(ui);
+                var mp = document.getElementById("paper").contentDocument.getElementById("mark_position");
+                if (mp != null){
+                    mp.parentNode.removeChild(mp);
+                }
+
+                var data = getIframeElem(ui, event);
+
+                var html_mark = "<hr id='mark_position' style='border-bottom: 3px solid rgb(155, 187, 89)' >";
+
+                //console.log(data);
+                if(data.status){
+                    //console.log(data.target);
+                    if (data.position == 'after') {
+                       $(data.target).after(html_mark);
+                    } else if (data.position == 'before'){
+                        $(data.target).before(html_mark);
+                    }
+                }
+            }
+        }
+
+        function getIframeElem(ui, event){
+            var elem = document.getElementById("paper").contentDocument;
+            console.log('Elem:'+elem);
+            //console.log(event);
+            var pos = $("#paper").offset();
+            var c = ui.offset.left-pos.left,
+            d = ui.offset.top-pos.top;
+            var targetNode = elem.elementFromPoint(c,d);
+            //console.log(targetNode);
+           
+            if(targetNode != null){
+                targetNode = HTMLBlockDragView.rewriteTargetData_(targetNode, c, d);
+
+                console.log(targetNode);
+
+                var top = $(targetNode).offset().top;
+                var left = $(targetNode).offset().left;
+                var height = $(targetNode).height();
+
+                console.log({targettop:top,cusortop:d});
+
+                var rate = (d - top) / height;
+
+                var spos = rate >= 0.5 ? 'after' : 'before';
+                return {
+                  position: spos,
+                  target: targetNode,
+                  status: true
+                }
+            }else{
+               return {
+                 status: false
+               } 
+            }
+        }
+
+        window.HTMLBlockDragView = {
+            rewriteTargetData_: function(a, b, c) {
+                var d = this.getNearestElement_(a, b, c);
+                return d
+            },
+            getNearestElement_: function(a, b, c) {
+                return a.tagName.toLowerCase() === "html" && (a = a.querySelector("body"), !a) ? null: this.isContainer_(a) ? this.findNearestChildOf_(a, b, c) : a
+            },
+            isContainer_: function(a) {
+                return Array.prototype.slice.call(a.children).some(function(a) {
+                    return this.isValidTarget_(a)
+                },
+                this)
+            },
+            isValidTarget_: function(a) {
+                //if (HTMLContent.isCategory(HTMLContent.CATEGORY.PHRASING, a)) return ! 1;
+                a = a.getBoundingClientRect();
+                return ! a.width || !a.height ? !1 : !0
+            },
+            findNearestChildOf_: function(a, b, c) {
+                var a = Array.prototype.slice.call(a.children),
+                a = a.filter(function(a) {
+                    return this.isValidTarget_(a)
+                },
+                this),
+                d = null,
+                e = null;
+                a.forEach(function(a) {
+                    var g = this.shortestDistanceToElement_(a, b, c);
+                    if (e === null || g < e) e = g,
+                    d = a
+                },
+                this);
+                return d
+            },
+            shortestDistanceToElement_: function(a, b, c) {
+                a = this.getPointsForMeasuringDistances_(a).map(function(a) {
+                    return this.computeDistance_(b, c, a[0], a[1])
+                },
+                this);
+                return Math.min.apply(Math, a)
+            },
+            getPointsForMeasuringDistances_: function(a) {
+                var b = a.getBoundingClientRect(),
+                c = [[b.left, b.top], [b.right, b.top], [b.right, b.bottom], [b.left, b.bottom]];
+                this.getInnerIntervalsFromRange_(b.left, b.right, HTMLBlockDragView.DISTANCE_BETWEEN_EDGE_POINTS_).forEach(function(a) {
+                    c.push([a, b.top], [a, b.bottom])
+                });
+                this.getInnerIntervalsFromRange_(b.top, b.bottom, HTMLBlockDragView.DISTANCE_BETWEEN_EDGE_POINTS_).forEach(function(a) {
+                    c.push([b.left, a], [b.right, a])
+                });
+                return c
+            },
+            getInnerIntervalsFromRange_: function(a, b, c) {
+                var d = a < b ? 1 : -1,
+                e = Math.abs(b - a),
+                b = e / c;
+                e % c !== 0 && (b = Math.floor(b) + 1, c = e / b);
+                for (var e = [], f = 1; f < b; f++) e.push(a + d * f * c);
+                return e
+            },
+            computeDistance_: function(a, b, c, d) {
+                return Math.sqrt(Math.pow(c - a, 2) + Math.pow(d - b, 2))
+            }
+        };
+        HTMLBlockDragView.DISTANCE_BETWEEN_EDGE_POINTS_ = 50;
+        </script>
+    </body>
+</html>

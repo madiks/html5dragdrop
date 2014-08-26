@@ -1,0 +1,73 @@
+.redactor_toolbar li a.re-modal_hr {
+	background-image: url(mymodal.png);
+}
+.redactor_toolbar li a.re-modal_hr:hover {
+	background-image: url(mymodal-hover.png);
+}
+
+/*.re-modal_hr:before {
+	content: "\e616";
+}*/
+.re-modal_set:before {
+	content: "\e616";
+}
+.re-modal_header:before {
+	content: "\e616";
+}
+.re-modal_p:before {
+	content: "\e616";
+}
+.re-modal_font_family:before {
+	content: "\e616";
+}
+.re-modal_font_size:before {
+	content: "\e616";
+}
+.re-modal_p_backcolor:before {
+	content: "\e616";
+}
+.re-modal_p_vertical:before {
+	content: "\e616";
+}
+.re-modal_page_break:before {
+	content: "\e616";
+}
+.re-chapter_split:before {
+	content: "\e616";
+}
+.re-modal_clear_p_style:before {
+	content: "\e616";
+}
+.re-modal_replace:before {
+	content: "\e616";
+}
+.re-modal_subscript:before {
+	content: "\e616";
+}
+.re-modal_mathml:before {
+	content: "\e616";
+}
+.re-modal_math_preview:before {
+	content: "\e616";
+}
+.re-modal_full_image:before {
+	content: "\e616";
+}
+.re-modal_space:before {
+	content: "\e616";
+}
+.re-modal_p_indents:before {
+	content: "\e616";
+}
+.re-modal_list:before {
+	content: "\e616";
+}
+.re-modal_p_group:before {
+	content: "\e616";
+}
+.re-modal_p_forced_not_indented:before {
+	content: "\e616";
+}
+.re-modal_phonetic:before {
+	content: "\e616";
+}
