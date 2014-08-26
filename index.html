@@ -18,7 +18,14 @@
             <div class="album" id="drop_2" droppable="true"><h2>Album 1</h2></div> -->
             <div class="paper" >
                 <div id="iframe_container"> 
-                    <textarea id="redactor_content" name="content" style="display: none;height:800px" dir="ltr"></textarea>
+                    <textarea id="redactor_content" name="content" style="display: none;height:600px" dir="ltr"></textarea>
+                </div>
+                <div class="element-overlay-container" id="mark-element-inspector-overlay" style="position: absolute; display:none; z-index:1000;padding: 4px;margin-left: -5px;margin-top: -5px;transition: opacity 100ms ease-in-out;">
+                    <div class="top-hover-target"></div>
+                    <div class="editing-container">
+                        <div class="edit-button left identifier" id="mark_identifier">p</div>
+                        <div class="edit-button right trash" id="mark_remove_node">delete</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -45,13 +52,13 @@
         <script src="redactor/9.2.2/lang/zh_cn.js"></script> 
         <script src="js/jquery.iframe.js" type="text/javascript"></script>
         <script src="js/draganddrop.js" type="text/javascript"></script>
+        <script src="js/jquery.iframetracker.js"></script>
         <script>
 
         var html_iframe = "<!DOCTYPE html><html xmlns='http://www.w3.org/1999/xhtml' designation='' enumeration='' data-uuid='5b9f229c1b49490d885bf5728375ed39'><head><meta charset='utf-8' /><link type='text/css' rel='stylesheet' title='default' href='css/iframe.css' /><title>new record</title></head><body contenteditable='true' dir='ltr'><header class='page-header-b' data-uuid='25f87a2f32af46bb9781bed8b98095e0'><h1 data-uuid='56cf6bd655d946d0bc2ed38cff9f88b2'>New Record in my life</h1><p data-uuid='16b8cbb8b3f34bb58841e831bc456025'>Use this <b>page header pattern</b>to start a new page.</p></header><p data-uuid='7c8e1d4952824948a63c8ada78bc8f22'>This is a paragraph of placeholder text. It is only here to help show the layout of the page and how the text will flow. Replace this placeholder text with your own meaningful content.</p><p>This is a nice work!</p><p>Writen by Madiks.</p></body></html>";
 
 
-        $(function()
-        {
+        $(function(){
             $('#redactor_content').redactor({ 
                 iframe: true,
                 xhtml: true,
@@ -63,11 +70,13 @@
                 focus: true
             });
 
-
             $("iframe").squirt(html_iframe, function() {}, {});
             $("iframe").attr('id','rif');      
+            $("iframe").attr('scrolling','no');
 
-           
+            $("#rif").load(function(event) {
+                updateIframeHeight();
+            });
 
             $(".draggable").draggable({
               appendTo: ".redactor_box",
@@ -86,6 +95,7 @@
                 tolerance: "fit",
                 drop: function(event, ui) {
                    DragAndDrop.dropAction(event, ui, 'rif');
+                   updateIframeHeight();
                 },
                 over: function(event, ui){
                    DragAndDrop.is_drag_in = true;
@@ -98,9 +108,63 @@
         
             $("body").on("click","h2",function(){
                 //var html = document.getElementById("rif").contentDocument;
+
                 var html = $("#rif").contents().find("html").html();
                 console.log(html);
-            });       
+               
+            });
+
+            var selected_node = null;
+
+            document.getElementById("rif").contentWindow.document.onclick =  function(event) {
+                //console.log(event);
+                var data = DragAndDrop.getElemByPos(event, 'rif')
+                //console.log(data);
+                ajustMarkDivPos(data);
+            }
+
+            document.getElementById("rif").contentWindow.document.onmouseleave =  function(event) {
+                $('#mark-element-inspector-overlay').hide();
+                selected_node = null;
+            }
+
+            document.getElementById("rif").contentWindow.document.body.onkeyup =  function(event) {
+                console.log('changed!');
+                updateIframeHeight();
+            }
+           
+
+            function updateIframeHeight(){
+                var iframe_height = document.getElementById("rif").contentWindow.document.body.offsetHeight;
+                if(iframe_height > 500){
+                    $("#rif").css("height", iframe_height+100);
+                }
+               
+            }
+
+            function ajustMarkDivPos(data){
+                $('#mark-element-inspector-overlay').hide();
+                selected_node = null;
+                if(data.status){
+                    selected_node = data.target;
+                    $('#mark-element-inspector-overlay').css({
+                        'width': data.width+10, 
+                        'top': data.top+2, 
+                        'left': data.left-5, 
+                        'height': data.height+4, 
+                    }).show();
+                    $('#mark_identifier').html(data.tagName);
+                    $('#mark-element-inspector-overlay').addClass("active");
+                }
+            }
+
+            $("body").on("click", "#mark_remove_node", function () {
+                if(selected_node !== null){
+                    $('#mark-element-inspector-overlay').hide();
+                    $(selected_node).remove();
+                    selected_node = null;
+                }
+            });
 
         });
 

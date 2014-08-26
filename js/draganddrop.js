@@ -1,5 +1,6 @@
 var DragAndDrop = {};
 DragAndDrop.is_drag_in = false;
+DragAndDrop.forbidden_tag = ['tr','td','th','tbody'];
 DragAndDrop.getIframeElem = function (event, ui, iframe_id) {
 	var elem = document.getElementById(iframe_id).contentDocument;
 	//console.log(event);
@@ -7,12 +8,12 @@ DragAndDrop.getIframeElem = function (event, ui, iframe_id) {
 	var c = ui.offset.left-pos.left,
 	d = ui.offset.top-pos.top;
 	var targetNode = elem.elementFromPoint(c,d);
+    targetNode = this.filterHtmlTag(targetNode);
 	//console.log(targetNode);
-	
 	if(targetNode != null){
 	    targetNode = HTMLBlockDragView.rewriteTargetData_(targetNode, c, d);
 
-	    console.log(targetNode);
+	    //console.log(targetNode);
 
 	    var top = $(targetNode).offset().top;
 	    var left = $(targetNode).offset().left;
@@ -35,19 +36,73 @@ DragAndDrop.getIframeElem = function (event, ui, iframe_id) {
 	}
 }
 
+DragAndDrop.filterHtmlTag = function (tag) {
+    var tagc = tag;
+    var tagName = tag.tagName.toLowerCase();
+    while($.inArray(tagName, this.forbidden_tag) !== -1){
+        tagc = tagc.parentNode;
+        //console.log('tagc:');
+        //console.log(tagc);
+        if(tagc){
+            tagName = tagc.tagName.toLowerCase();
+        }
+        //console.log(tagName);
+       
+    }
+    return tagc;
+}
+
+DragAndDrop.getElemByPos = function(event , iframe_id){
+    var elem = document.getElementById(iframe_id).contentDocument;
+    //console.log(event);
+    var pos = $("#"+iframe_id).offset();
+    var c = event.x,
+    d = event.y;
+    var targetNode = elem.elementFromPoint(c,d);
+
+    console.log(targetNode);
+
+    targetNode = this.filterHtmlTag(targetNode);
+    console.log('after filterHtmlTag:');
+    console.log(targetNode);
+    
+    if(targetNode != null ){
+        targetNode = HTMLBlockDragView.rewriteTargetData_(targetNode, c, d);
+
+        //console.log(targetNode);
+
+        var top = $(targetNode).offset().top+pos.top;
+        var left = $(targetNode).offset().left+pos.left;
+        var height = $(targetNode).height();
+        var width = $(targetNode).width();
+        var tagName = targetNode.tagName.toLowerCase();
+        return {
+          top: top,
+          left: left,
+          height: height,
+          width: width,
+          tagName: tagName,
+          target: targetNode,
+          status: true
+        }
+    }else{
+       return {
+         status: false
+       } 
+    }
+}
+
 DragAndDrop.dragOver = function (event, ui, iframe_id) {
 	if(this.is_drag_in){
 		$(".ui-draggable-dragging").show();
-	    console.log('over');
-
-	    //console.log(ui);
+	    //console.log('dragover');
 	    this.removeMark(iframe_id);
 
 	    var data = this.getIframeElem(event, ui, iframe_id);
 
 	    var html_mark = "<hr id='mark_position' class='divider_mark_position_abcd' style='border-bottom: 3px solid rgb(155, 187, 89)' >";
 
-	    console.log(data);
+	    //console.log(data);
 
 	    if(data.status){
 	        //console.log(data.target);
@@ -67,8 +122,8 @@ DragAndDrop.removeMark =  function (iframe_id) {
 }
 
 DragAndDrop.dropAction = function (event, ui, iframe_id){
-    console.log(ui.draggable.context.id);
-    console.log( "dropped" );
+    //console.log(ui.draggable.context.id);
+    //console.log( "dropped" );
 
     this.removeMark(iframe_id);
 
@@ -102,17 +157,31 @@ window.HTMLBlockDragView = {
         this)
     },
     isValidTarget_: function(a) {
-        //if (HTMLContent.isCategory(HTMLContent.CATEGORY.PHRASING, a)) return ! 1;
+        //过滤标签
+        if ($.inArray(a.tagName.toLowerCase(), DragAndDrop.forbidden_tag) !== -1) {
+            return 0;
+        }
         a = a.getBoundingClientRect();
         return ! a.width || !a.height ? !1 : !0
     },
     findNearestChildOf_: function(a, b, c) {
-        var a = Array.prototype.slice.call(a.children),
+        //将传入元素的子节点压入数组
+        //console.log(a);
+        var temp = a;
+        var a = Array.prototype.slice.call(a.children);
+
+        if(temp.tagName.toLowerCase() !== "body"){
+            a.push(temp);
+        }
+        
+        console.log(a);
+        //过滤数组
         a = a.filter(function(a) {
             return this.isValidTarget_(a)
         },
-        this),
-        d = null,
+        this);
+        //console.log(a);
+        var d = null,
         e = null;
         a.forEach(function(a) {
             var g = this.shortestDistanceToElement_(a, b, c);

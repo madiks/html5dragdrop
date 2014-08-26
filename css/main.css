@@ -270,3 +270,90 @@ header .stuts span {
     box-shadow: 2px 2px 4px #444;
 }
 
+
+
+.element-overlay-container.active {
+    background-color:rgba(0,153,183,0.05);
+    pointer-events:none;
+    box-shadow:inset 0 0 0 1px rgba(0,125,153,0.5),0 0 4px rgba(0,153,183,0.35)
+}
+.element-overlay-container.contents-interactive {
+    background-color:transparent
+}
+.element-overlay-container.show {
+    visibility:visible;
+    opacity:1
+}
+.element-overlay-container .top-hover-target {
+    pointer-events:auto;
+    height:5px;
+    margin:-5px;
+    margin-bottom:0
+}
+.element-overlay-container .editing-container {
+    position:absolute;
+    display:flex;
+    left:0;
+    right:0;
+    top:-30px
+}
+.element-overlay-container .editing-container .edit-button {
+    pointer-events:auto;
+    cursor:pointer;
+    box-sizing:border-box;
+    height:29px;
+    padding:5px 7px;
+    position:relative;
+    top:2px;
+    right:-1px;
+    background-color:#fff;
+    color:#007d99;
+    font-size:12px;
+    line-height:20px;
+    border-width:1px 1px 0 1px;
+    border-color:rgba(0,153,183,0.4);
+    border-style:solid;
+    border-top-left-radius:2px;
+    border-top-right-radius:2px
+}
+.element-overlay-container .editing-container .edit-button.identifier  {
+    border:none;
+    background-color:#007d99;
+    color:white;
+    box-shadow:inset 0 0 0 1px #007089,inset 0 2px 0 rgba(255,255,255,0.2)
+}
+.element-overlay-container .editing-container .edit-button.left {
+    margin:0 5px 0 0
+}
+.element-overlay-container .editing-container .edit-button.right {
+    margin:0 1px 0 auto;
+    background-color:transparent;
+    border:none
+}
+.element-overlay-container .editing-container .edit-button.right ~ .right {
+    margin:0 0 0 5px
+}
+.element-overlay-container .editing-container .edit-button.change {
+    vertical-align:top;
+    padding-right:10px
+}
+.element-overlay-container .editing-container .edit-button.change::before {
+    background-repeat:no-repeat;
+    background-position:center;
+    background-size:contain;
+    display:inline-block;
+    min-width:15px;
+    height:100%;
+    margin-right:5px
+}
+.element-overlay-container .editing-container .edit-button.trash {
+    border:none;
+    background-color:#19191A;
+    color:white;
+    box-shadow:inset 0 0 0 1px #007089,inset 0 2px 0 rgba(255,255,255,0.2)
+    background-repeat:no-repeat;
+    opacity:0.7
+}
+.element-overlay-container .editing-container .edit-button.trash:hover {
+    opacity:1
+}
