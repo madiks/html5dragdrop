@@ -5,26 +5,25 @@ DragAndDrop.getIframeElem = function (event, ui, iframe_id) {
 	var elem = document.getElementById(iframe_id).contentDocument;
 	//console.log(event);
 	var pos = $("#"+iframe_id).offset();
-    var c = ui.offset.left-pos.left,
-    d = ui.offset.top-pos.top;
+	var c = ui.offset.left-pos.left,
+	d = ui.offset.top-pos.top;
 	var targetNode = elem.elementFromPoint(c,d);
     targetNode = this.filterHtmlTag(targetNode);
 	//console.log(targetNode);
 	if(targetNode != null){
-	   targetNode = HTMLBlockDragView.rewriteTargetData_(targetNode, c, d);
+	    targetNode = HTMLBlockDragView.rewriteTargetData_(targetNode, c, d);
 
-        console.log(targetNode);
+	    //console.log(targetNode);
 
-        var top = $(targetNode).offset().top+pos.top;
-        var left = $(targetNode).offset().left+pos.left;
-        var height = $(targetNode).height();
-        var width = $(targetNode).width();
+	    var top = $(targetNode).offset().top;
+	    var left = $(targetNode).offset().left;
+	    var height = $(targetNode).height();
         var tagName = targetNode.tagName.toLowerCase();
-        //console.log({targettop:top,cusortop:d});
+        var width = $(targetNode).width();
+	    //console.log({targettop:top,cusortop:d});
+	    var rate = (d - top) / height;
 
-        var rate = (d - top) / height;
-
-        var spos = rate >= 0.5 ? 'after' : 'before';
+	    var spos = rate >= 0.5 ? 'after' : 'before';
 
        return {
          position: spos,
@@ -159,7 +158,7 @@ DragAndDrop.dragOver = function (event, ui, iframe_id) {
 
 	    //var html_mark = "<hr id='mark_position' class='divider_mark_position_abcd' style='border-bottom: 3px solid rgb(155, 187, 89)' >";
 
-	    console.log(data);
+	    console.log(data.position);
 
 	    if(data.status){
             if(data.tagName === "body"){
