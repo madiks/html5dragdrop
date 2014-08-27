@@ -1,35 +1,41 @@
 var DragAndDrop = {};
 DragAndDrop.is_drag_in = false;
-DragAndDrop.forbidden_tag = ['tr','td','th','tbody','b','i'];
+DragAndDrop.forbidden_tag = ['tr','td','th','tbody','i','b'];
 DragAndDrop.getIframeElem = function (event, ui, iframe_id) {
 	var elem = document.getElementById(iframe_id).contentDocument;
 	//console.log(event);
 	var pos = $("#"+iframe_id).offset();
-	var c = ui.offset.left-pos.left,
-	d = ui.offset.top-pos.top;
+    var c = ui.offset.left-pos.left,
+    d = ui.offset.top-pos.top;
 	var targetNode = elem.elementFromPoint(c,d);
     targetNode = this.filterHtmlTag(targetNode);
 	//console.log(targetNode);
 	if(targetNode != null){
-	    targetNode = HTMLBlockDragView.rewriteTargetData_(targetNode, c, d);
+	   targetNode = HTMLBlockDragView.rewriteTargetData_(targetNode, c, d);
 
-	    //console.log(targetNode);
+        console.log(targetNode);
 
-	    var top = $(targetNode).offset().top;
-	    var left = $(targetNode).offset().left;
-	    var height = $(targetNode).height();
+        var top = $(targetNode).offset().top+pos.top;
+        var left = $(targetNode).offset().left+pos.left;
+        var height = $(targetNode).height();
+        var width = $(targetNode).width();
         var tagName = targetNode.tagName.toLowerCase();
-	    //console.log({targettop:top,cusortop:d});
+        //console.log({targettop:top,cusortop:d});
 
-	    var rate = (d - top) / height;
+        var rate = (d - top) / height;
 
-	    var spos = rate >= 0.5 ? 'after' : 'before';
-	    return {
-	      position: spos,
-	      target: targetNode,
-          tagName: tagName,
-	      status: true
-	    }
+        var spos = rate >= 0.5 ? 'after' : 'before';
+
+       return {
+         position: spos,
+         height: height,
+         target: targetNode,
+         tagName: tagName,
+         top: top,
+         left: left,
+         width: width,
+         status: true
+       }
 	}else{
 	   return {
 	     status: false
@@ -55,7 +61,7 @@ DragAndDrop.filterHtmlTag = function (tag) {
 
 DragAndDrop.getElemByPos = function(event , iframe_id){
     var elem = document.getElementById(iframe_id).contentDocument;
-    //console.log(event);
+    console.log(event);
     var pos = $("#"+iframe_id).offset();
     var c = event.x,
     d = event.y;
@@ -93,26 +99,97 @@ DragAndDrop.getElemByPos = function(event , iframe_id){
     }
 }
 
+DragAndDrop.getElemByPosss = function(event , ui, iframe_id){
+    var elem = document.getElementById(iframe_id).contentDocument;
+    console.log(event);
+    var pos = $("#"+iframe_id).offset();
+    var c = event.clientX,
+    d = event.clientY;
+    var targetNode = elem.elementFromPoint(c,d);
+
+    //console.log(targetNode);
+
+    targetNode = this.filterHtmlTag(targetNode);
+    //console.log('after filterHtmlTag:');
+    //console.log(targetNode);
+    
+    if(targetNode != null ){
+        targetNode = HTMLBlockDragView.rewriteTargetData_(targetNode, c, d);
+
+        console.log(targetNode);
+
+        var top = $(targetNode).offset().top;
+        var left = $(targetNode).offset().left;
+        var height = $(targetNode).height();
+        var width = $(targetNode).width();
+        var tagName = targetNode.tagName.toLowerCase();
+
+        var rate = (d - top) / height;
+
+        var spos = rate >= 0.5 ? 'after' : 'before';
+
+        return {
+          position: spos,
+          target: targetNode,
+          tagName: tagName,
+          top: top,
+          left: left,
+          height: height,
+          width: width,
+          status: true
+        }
+    }else{
+       return {
+         status: false
+       } 
+    }
+}
+
+DragAndDrop.addMark = function (target) {
+    var overlay = $('<div class="pattern-insertion-overlay" style="position: absolute; display:none; pointer-events: none; z-index:1000"></div>');
+    $(target).append(overlay);
+}
+
 DragAndDrop.dragOver = function (event, ui, iframe_id) {
 	if(this.is_drag_in){
 		$(".ui-draggable-dragging").show();
 	    //console.log('dragover');
-	    this.removeMark(iframe_id);
-
+        $('.pattern-insertion-overlay').hide();
 	    var data = this.getIframeElem(event, ui, iframe_id);
 
-	    var html_mark = "<hr id='mark_position' class='divider_mark_position_abcd' style='border-bottom: 3px solid rgb(155, 187, 89)' >";
+	    //var html_mark = "<hr id='mark_position' class='divider_mark_position_abcd' style='border-bottom: 3px solid rgb(155, 187, 89)' >";
 
 	    console.log(data);
 
 	    if(data.status){
             if(data.tagName === "body"){
-                $(data.target).append(html_mark);
+                $('.pattern-insertion-overlay').css({
+                        'width': data.width, 
+                        'top': data.top+data.height, 
+                        'left': data.left, 
+                        'height': '3px', 
+                        'background-color': 
+                        'rgb(155, 187, 89)'
+                }).show();
             }else{
                 if (data.position == 'after') {
-                   $(data.target).after(html_mark);
+                  $('.pattern-insertion-overlay').css({
+                        'width': data.width, 
+                        'top': data.top, 
+                        'left': data.left, 
+                        'height': '3px', 
+                        'background-color': 
+                        'rgb(155, 187, 89)'
+                    }).show();
                 } else if (data.position == 'before'){
-                    $(data.target).before(html_mark);
+                    $('.pattern-insertion-overlay').css({
+                        'width': data.width, 
+                        'top': data.top, 
+                        'left': data.left, 
+                        'height': '3px', 
+                        'background-color': 
+                        'rgb(155, 187, 89)'
+                    }).show();
                 }
             }
 	    }
@@ -121,15 +198,13 @@ DragAndDrop.dragOver = function (event, ui, iframe_id) {
 	}
 }
 
-DragAndDrop.removeMark =  function (iframe_id) {
-    $("#"+iframe_id).contents().find(".divider_mark_position_abcd").remove();
-}
+
 
 DragAndDrop.dropAction = function (event, ui, iframe_id){
     //console.log(ui.draggable.context.id);
     //console.log( "dropped" );
 
-    this.removeMark(iframe_id);
+    $('.pattern-insertion-overlay').hide();
 
     var data = this.getIframeElem(event, ui, iframe_id);
     

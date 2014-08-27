@@ -50,7 +50,7 @@
         <script src="js/jquery-ui.js"></script>
         <script src="redactor/9.2.2/redactor.js"></script>
         <script src="redactor/9.2.2/lang/zh_cn.js"></script> 
-        <script src="js/draganddrop.js" type="text/javascript"></script>
+        <script src="js/draganddrop-new.js" type="text/javascript"></script>
         <script>
 
         $(function(){
@@ -68,6 +68,7 @@
                 initCallback: function(){
                     console.log('init!');
                     updateIframeHeight();
+                    DragAndDrop.addMark("#iframe_container");
                 },
                 changeCallback: function(html){
                     console.log('iframe content changed!');
@@ -119,7 +120,7 @@
                 },
                 out: function(event, ui){
                    DragAndDrop.is_drag_in = false;
-                   DragAndDrop.removeMark('rif');
+                   $('.pattern-insertion-overlay').hide();
                 }
             });
         
