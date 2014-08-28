@@ -5,7 +5,7 @@ DragAndDrop.getIframeElem = function (event, ui, iframe_id) {
 	var elem = document.getElementById(iframe_id).contentDocument;
 	//console.log(event);
 	var pos = $("#"+iframe_id).offset();
-	var c = ui.offset.left-pos.left,
+	var c = ui.offset.left,
 	d = ui.offset.top-pos.top;
 	var targetNode = elem.elementFromPoint(c,d);
     targetNode = this.filterHtmlTag(targetNode);
@@ -176,7 +176,7 @@ DragAndDrop.dragOver = function (event, ui, iframe_id) {
                 if (data.position == 'after') {
                   $('.pattern-insertion-overlay').css({
                         'width': data.width, 
-                        'top': data.top+data.height, 
+                        'top': data.top+data.height+1, 
                         'left': data.left, 
                         'height': '3px', 
                         'background-color': 
@@ -185,7 +185,7 @@ DragAndDrop.dragOver = function (event, ui, iframe_id) {
                 } else if (data.position == 'before'){
                     $('.pattern-insertion-overlay').css({
                         'width': data.width, 
-                        'top': data.top, 
+                        'top': data.top-1, 
                         'left': data.left, 
                         'height': '3px', 
                         'background-color': 
