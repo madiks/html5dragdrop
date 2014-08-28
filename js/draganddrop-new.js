@@ -4,9 +4,10 @@ DragAndDrop.forbidden_tag = ['tr','td','th','tbody','i','b'];
 DragAndDrop.getIframeElem = function (event, ui, iframe_id) {
 	var elem = document.getElementById(iframe_id).contentDocument;
 	//console.log(event);
+    //console.log(ui);
 	var pos = $("#"+iframe_id).offset();
-	var c = ui.offset.left-pos.left,
-	d = ui.offset.top-pos.top;
+	var c = event.offsetX,
+	d = event.offsetY;
 	var targetNode = elem.elementFromPoint(c,d);
     targetNode = this.filterHtmlTag(targetNode);
 	//console.log(targetNode);
@@ -62,7 +63,7 @@ DragAndDrop.filterHtmlTag = function (tag) {
 
 DragAndDrop.getElemByPos = function(event , iframe_id){
     var elem = document.getElementById(iframe_id).contentDocument;
-    console.log(event);
+    //console.log(event);
     var pos = $("#"+iframe_id).offset();
     var c = event.x,
     d = event.y;
@@ -102,7 +103,7 @@ DragAndDrop.getElemByPos = function(event , iframe_id){
 
 DragAndDrop.getElemByPosss = function(event , ui, iframe_id){
     var elem = document.getElementById(iframe_id).contentDocument;
-    console.log(event);
+    //console.log(event);
     var pos = $("#"+iframe_id).offset();
     var c = event.offsetX,
     d = event.offsetY;
@@ -176,7 +177,7 @@ DragAndDrop.dragOver = function (event, ui, iframe_id) {
                 if (data.position == 'after') {
                   $('.pattern-insertion-overlay').css({
                         'width': data.width, 
-                        'top': data.top+data.height, 
+                        'top': data.top+data.height+1, 
                         'left': data.left, 
                         'height': '3px', 
                         'background-color': 
@@ -185,7 +186,7 @@ DragAndDrop.dragOver = function (event, ui, iframe_id) {
                 } else if (data.position == 'before'){
                     $('.pattern-insertion-overlay').css({
                         'width': data.width, 
-                        'top': data.top, 
+                        'top': data.top-1, 
                         'left': data.left, 
                         'height': '3px', 
                         'background-color': 
