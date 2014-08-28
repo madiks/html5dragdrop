@@ -13,10 +13,10 @@ DragAndDrop.getIframeElem = function (event, ui, iframe_id) {
 	if(targetNode != null){
 	    targetNode = HTMLBlockDragView.rewriteTargetData_(targetNode, c, d);
 
-	    //console.log(targetNode);
+	    console.log(targetNode);
 
 	    var top = $(targetNode).offset().top;
-	    var left = $(targetNode).offset().left;
+	    var left = $(targetNode).offset().left+pos.left;
 	    var height = $(targetNode).height();
         var tagName = targetNode.tagName.toLowerCase();
         var width = $(targetNode).width();
@@ -24,6 +24,8 @@ DragAndDrop.getIframeElem = function (event, ui, iframe_id) {
 	    var rate = (d - top) / height;
 
 	    var spos = rate >= 0.5 ? 'after' : 'before';
+
+        var top = $(targetNode).offset().top+pos.top;
 
        return {
          position: spos,
@@ -102,8 +104,8 @@ DragAndDrop.getElemByPosss = function(event , ui, iframe_id){
     var elem = document.getElementById(iframe_id).contentDocument;
     console.log(event);
     var pos = $("#"+iframe_id).offset();
-    var c = event.clientX,
-    d = event.clientY;
+    var c = event.offsetX,
+    d = event.offsetY;
     var targetNode = elem.elementFromPoint(c,d);
 
     //console.log(targetNode);
@@ -117,8 +119,8 @@ DragAndDrop.getElemByPosss = function(event , ui, iframe_id){
 
         console.log(targetNode);
 
-        var top = $(targetNode).offset().top;
-        var left = $(targetNode).offset().left;
+        var top = $(targetNode).offset().top+pos.top;
+        var left = $(targetNode).offset().left+pos.left;
         var height = $(targetNode).height();
         var width = $(targetNode).width();
         var tagName = targetNode.tagName.toLowerCase();
@@ -131,8 +133,8 @@ DragAndDrop.getElemByPosss = function(event , ui, iframe_id){
           position: spos,
           target: targetNode,
           tagName: tagName,
-          top: top,
-          left: left,
+          top: d+pos.top,
+          left: c+pos.left,
           height: height,
           width: width,
           status: true
@@ -158,13 +160,13 @@ DragAndDrop.dragOver = function (event, ui, iframe_id) {
 
 	    //var html_mark = "<hr id='mark_position' class='divider_mark_position_abcd' style='border-bottom: 3px solid rgb(155, 187, 89)' >";
 
-	    console.log(data.position);
+	    console.log(data);
 
 	    if(data.status){
             if(data.tagName === "body"){
                 $('.pattern-insertion-overlay').css({
                         'width': data.width, 
-                        'top': data.top+data.height, 
+                        'top': data.top, 
                         'left': data.left, 
                         'height': '3px', 
                         'background-color': 
@@ -174,7 +176,7 @@ DragAndDrop.dragOver = function (event, ui, iframe_id) {
                 if (data.position == 'after') {
                   $('.pattern-insertion-overlay').css({
                         'width': data.width, 
-                        'top': data.top, 
+                        'top': data.top+data.height, 
                         'left': data.left, 
                         'height': '3px', 
                         'background-color': 
