@@ -6,44 +6,249 @@
         <link href="css/main.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="css/jquery-ui.css">
        <link rel="stylesheet" href="redactor/9.2.2/redactor.css">
+       <link rel="stylesheet" href="redactor/9.2.2/plugins/modal/mymodal.css" />
     </head>
     <body>
-        <header tabindex="0">
+        <header tabindex="0" class="div-header">
             <h2>HTML5 JS Drag and Drop</h2>
             <a  href="http://www.script-tutorials.com/html5-drag-and-drop-sorting-photos/" class="stuts">Back to original tutorial on <span>Script Tutorials</span></a>
         </header>
 
-        <div class="albums">
-            <!-- <div class="album" id="drop_1" droppable="true"><h2>Album 1</h2></div>
-            <div class="album" id="drop_2" droppable="true"><h2>Album 1</h2></div> -->
-            <div class="paper" >
-                <div id="iframe_container"> 
-                    <textarea id="redactor_content" name="content" style="display: none;height:600px"><header class='page-header-b' data-uuid='25f87a2f32af46bb9781bed8b98095e0'><h1 data-uuid='56cf6bd655d946d0bc2ed38cff9f88b2'>New Record in my life</h1><p data-uuid='16b8cbb8b3f34bb58841e831bc456025'>Use this <b>page header pattern</b>to start a new page.</p></header><p data-uuid='7c8e1d4952824948a63c8ada78bc8f22'>This is a paragraph of placeholder text. It is only here to help show the layout of the page and how the text will flow. Replace this placeholder text with your own meaningful content.</p><div><p>111</p><div style="width:300px"><p>222</p></div></div><div></div><p>This is a nice work!</p><p>Writen by Madiks.</p></textarea>
-                </div>
-                <div class="element-overlay-container" id="mark-element-inspector-overlay" style="position: absolute; display:none; z-index:1000;padding: 4px;margin-left: -5px;margin-top: -5px;transition: opacity 100ms ease-in-out;">
-                    <div class="top-hover-target"></div>
-                    <div class="editing-container">
-                        <div class="edit-button left identifier" id="mark_identifier">p</div>
-                        <div class="edit-button right trash" id="mark_remove_node">delete</div>
+        <div class="div-container">
+
+            <div class="albums">
+                <!-- <div class="album" id="drop_1" droppable="true"><h2>Album 1</h2></div>
+                <div class="album" id="drop_2" droppable="true"><h2>Album 1</h2></div> -->
+                <div class="paper" >
+                    <div id="iframe_container"> 
+                        <textarea id="redactor_content" name="content" style="display: none;height:600px"><header class='page-header-b' data-uuid='25f87a2f32af46bb9781bed8b98095e0'><h1 data-uuid='56cf6bd655d946d0bc2ed38cff9f88b2'>New Record in my life</h1><p data-uuid='16b8cbb8b3f34bb58841e831bc456025'>Use this <b>page header pattern</b>to start a new page.</p></header><p data-uuid='7c8e1d4952824948a63c8ada78bc8f22'>This is a paragraph of placeholder text. It is only here to help show the layout of the page and how the text will flow. Replace this placeholder text with your own meaningful content.</p><div><p>111</p><div style="width:300px"><p>222</p></div></div><div></div><p>This is a nice work!</p><p>Writen by Madiks.</p></textarea>
+                    </div>
+                    <div class="element-overlay-container" id="mark-element-inspector-overlay" style="position: absolute; display:none; z-index:1000;padding: 4px;margin-left: -5px;margin-top: -5px;transition: opacity 100ms ease-in-out;">
+                        <div class="top-hover-target"></div>
+                        <div class="editing-container">
+                            <div class="edit-button left identifier" id="mark_identifier">p</div>
+                            <div class="edit-button right trash" id="mark_remove_node">delete</div>
+                        </div>
                     </div>
                 </div>
             </div>
+
+
+            <div class="gallery">
+                <a id="1" class="draggable" ><img src="images/1.jpg"></a>
+                <a id="2" class="draggable" ><img src="images/2.jpg"></a>
+                <a id="3" class="draggable" ><img src="images/3.jpg"></a>
+                <a id="4" class="draggable" ><img src="images/4.jpg"></a>
+                <a id="5" class="draggable" ><img src="images/5.jpg"></a>
+                <a id="6" class="draggable" ><img src="images/6.jpg"></a>
+                <a id="7" class="draggable" ><img src="images/7.jpg"></a>
+                <a id="8" class="draggable" ><img src="images/8.jpg"></a>
+                <a id="9" class="draggable" ><img src="images/9.jpg"></a>
+                <a id="10" class="draggable" ><img src="images/10.jpg"></a>
+                <a id="11" class="draggable" ><img src="images/11.jpg"></a>
+                <a id="12" class="draggable" ><img src="images/12.jpg"></a>
+            </div>
+
         </div>
 
 
-        <div class="gallery">
-            <a id="1" class="draggable" ><img src="images/1.jpg"></a>
-            <a id="2" class="draggable" ><img src="images/2.jpg"></a>
-            <a id="3" class="draggable" ><img src="images/3.jpg"></a>
-            <a id="4" class="draggable" ><img src="images/4.jpg"></a>
-            <a id="5" class="draggable" ><img src="images/5.jpg"></a>
-            <a id="6" class="draggable" ><img src="images/6.jpg"></a>
-            <a id="7" class="draggable" ><img src="images/7.jpg"></a>
-            <a id="8" class="draggable" ><img src="images/8.jpg"></a>
-            <a id="9" class="draggable" ><img src="images/9.jpg"></a>
-            <a id="10" class="draggable" ><img src="images/10.jpg"></a>
-            <a id="11" class="draggable" ><img src="images/11.jpg"></a>
-            <a id="12" class="draggable" ><img src="images/12.jpg"></a>
+        <!--insert hr-->
+        <div id="modal_hr" style="display: none;">
+            <section>
+            <form id="redactorInsertHrForm">
+                <label>宽度</label>
+                <input id="redactor_insert_hr_width" type="text" value="100" />%
+                <label>高度</label>
+                <input id="redactor_insert_hr_height" type="text" value="5" />px
+                <label>背景颜色</label>
+                <button class="btn btn-default" id="redactor_insert_hr_background_color_select">
+                    <a rel="#ffcc33" href="javascript:void(null);" id="redactor_insert_hr_background_color"></a>
+                    <a rel="#ffcc33" href="javascript:void(null);" class="redactor_color_link" id="redactor_insert_hr_background_color_preview" style="background-color: #ffcc33;">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                </button>
+            </form>
+            </section>
+            <footer>
+                <button class="redactor_modal_btn redactor_btn_modal_close">取消</button>
+                <button id="redactor_insert_hr_btn" class="redactor_modal_btn redactor_modal_action_btn">确认</button>
+            </footer>
+        </div> 
+        
+        <!--send email to-->
+        <div id="modal_set" style="display: none;">
+            <section>
+            <form id="redactorSetForm">
+                <label>Email</label>
+                <input id="redactor_set_email" type="text" style="width:200px" value="<{$email}>"/>
+            </form>
+            </section>
+            <footer>
+                <button class="redactor_modal_btn redactor_btn_modal_close">取消</button>
+                <button id="redactor_set_btn" class="redactor_modal_btn redactor_modal_action_btn">确认</button>
+            </footer>
+        </div> 
+        
+        <!--header1-->
+        <div id="modal_header1" style="display: none;">
+            <div id="redactor_modal_content">
+            <form id="redactorHeader1Form">
+                <label>Foreground Color</label>
+                #<input id="redactor_header1_foreground_color" type="text" style="width:200px" value="f00" />
+                <label>Background Color</label>
+                #<input id="redactor_header1_background_color" type="text" style="width:200px" value="f2f2f2"/>
+            </form>
+            </div>
+            <div id="redactor_modal_footer">
+                <a href="javascript:void(null);" class="redactor_modal_btn redactor_btn_modal_close">取消</a>
+                <input type="button" class="redactor_modal_btn" id="redactor_header1_btn" value="确认" />
+            </div>
+        </div> 
+        
+        <!--p1-->
+        <div id="modal_p1" style="display: none;">
+            <div id="redactor_modal_content">
+            <form id="redactorP1Form">
+                <label>Padding Left</label>
+                <input id="redactor_p1_padding_left" type="text" style="width:200px" value="10" />%
+                <label>Padding Right</label>
+                <input id="redactor_p1_padding_right" type="text" style="width:200px" value="10" />%
+            </form>
+            </div>
+            <div id="redactor_modal_footer">
+                <a href="javascript:void(null);" class="redactor_modal_btn redactor_btn_modal_close">取消</a>
+                <input type="button" class="redactor_modal_btn" id="redactor_format_p1_btn" value="确认" />
+            </div>
+        </div>
+        
+        <!--p vertical-->
+        <div id="modal_p_vertical" style="display: none;">
+            <section>
+            <form id="redactorPVerticalForm">
+                <label>段落高度</label>
+                <input id="redactor_p_vertical_height" type="text" style="width:200px" value="10" />em
+            </form>
+            </section>
+            <footer>
+                <button class="redactor_modal_btn redactor_btn_modal_close">取消</button>
+                <button id="redactor_p_vertical_btn" class="redactor_modal_btn redactor_modal_action_btn">确认</button>
+            </footer>
+        </div>
+
+        <!--replace-->
+        <div id="modal_replace" style="display: none;">
+            <section>
+            <form id="redactorSearch">
+                <label>查找目标</label>
+                <input id="redactor_find_what" type="text" style="width:200px" />
+                <label>替换为</label>
+                <input id="redactor_replace_with" type="text" style="width:200px" />
+            </form>
+            </section>
+            <footer>
+                <button class="redactor_modal_btn redactor_btn_modal_close">取消</button>
+                <button id="redactor_replace_btn" class="redactor_modal_btn redactor_modal_action_btn">确认</button>
+            </footer>
+        </div>
+        
+        <!--subscript-->
+        <div id="modal_subscript" style="display: none;">
+            <section>
+            <form id="redactorSupscript">
+                <label>脚注标识</label>
+                <input id="redactor_subscript_mark" type="text" style="width:300px" />
+                <label>脚注内容</label>
+                <input id="redactor_subscript_content" type="text" style="width:300px" />
+            </form>
+            </section>
+            <footer>
+                <button class="redactor_modal_btn redactor_btn_modal_close">取消</button>
+                <button id="redactor_subscript_btn" class="redactor_modal_btn redactor_modal_action_btn">确认</button>
+            </footer>
+        </div>
+
+        <!--add mathml-->
+        <div id="modal_mathml" style="display: none;">
+            <section>
+            <div id="mathml-description">
+                <h4>说明</h4>
+                <h6>第一步：安装或启动 Daum Equation Editor 扩展 （仅支持 Chrome）</h6>
+                <p><a target="_blank" href="https://chrome.google.com/webstore/detail/daum-equation-editor/dinfmiceliiomokeofbocegmacmagjhe?utm_source=chrome-ntp-launcher">安装 Daum Equation Editor 扩展 </a></p>
+
+                <h6>第二步：</h6>
+                <p>编辑公式</p>
+
+                <h6>第三步：</h6>
+                <p>复制下方 TeX 内容，到 <a target="_blank" href="<{$baseUrl}>/editor/math-preview/">Tex2MathML 转换页面</a> 转换成 MathML</p>
+
+                <h6>第四步：</h6>
+                <p>复制生成的 MathML 到下方对话框，点击确定</p>
+            </div>
+
+            <form id="redactorMathml">
+                <label>输入MathML</label>
+                <textarea id="redactor_mathml" style="width:400px;height:150px;"></textarea>
+            </form>
+            </section>
+            <footer>
+                <button class="redactor_modal_btn redactor_btn_modal_close">取消</button>
+                <button id="redactor_mathml_btn" class="redactor_modal_btn redactor_modal_action_btn">确认</button>
+            </footer>
+        </div>
+
+        <!--math preview-->
+        <div id="modal_math_preview" style="display: none;">
+            <section>
+                <!--Type text in the box below:<br/>-->
+                <textarea id="MathInput" cols="60" rows="10" onkeyup="Preview.Update()" style="margin-top:5px;display:none">
+                </textarea>
+                <!--<br/><br/>
+                Preview is shown here:-->
+                <div id="MathPreview" style="border:1px solid; padding: 3px; margin-top:5px"></div>
+                <div id="MathBuffer" style="border:1px solid; padding: 3px; margin-top:5px; 
+                visibility:hidden; position:absolute; top:0; left: 0"><div>
+            </section>
+        </div>
+
+        <!--full image-->
+        <div id="modal_full_image" style="display: none;">
+            <section>
+            <div id="redactor_plugin_tabs">
+                <a href="javascript:void(null);" class="redactor_plugin_tabs_act">上传</a>
+                <a href="javascript:void(null);">选择</a>
+                <a href="javascript:void(null);">链接</a>
+            </div>      
+            <form id="redactorInsertFullImageForm" method="post" action="" enctype="multipart/form-data">
+                <div id="redactor_plugin_tab1" class="redactor_plugin_tab">
+                    <input type="file" id="redactor_plugin_file" name="file" />
+                </div>
+                <div id="redactor_plugin_tab2" class="redactor_plugin_tab" style="display: none;">
+                    <div id="redactor_image_box"></div>
+                </div>          
+            </form>
+            <div id="redactor_plugin_tab3" class="redactor_plugin_tab" style="display: none;">
+                <label>图片网页地址</label>
+                <input type="text" name="redactor_file_link" id="redactor_plugin_file_link" class="redactor_input"  />
+            </div>      
+            </section>
+            <footer>
+                <button class="redactor_modal_btn redactor_btn_modal_close">取消</button>
+                <button id="redactor_plugin_upload_btn" class="redactor_modal_btn redactor_modal_action_btn">插入</button>
+            </footer>
+        </div>  
+
+        <!--留白-->
+        <div id="modal_space" style="display: none;">
+            <section>
+            <form id="redactorSpace">
+                <label>留白高度</label>
+                <input class="redactor_space_height" type="radio" value="30%" name="redactor_space_height" checked />30% &nbsp;&nbsp;&nbsp;&nbsp;
+                <input class="redactor_space_height" type="radio" value="50%" name="redactor_space_height" />50% &nbsp;&nbsp;&nbsp;&nbsp;
+                <input class="redactor_space_height" type="radio" value="70%" name="redactor_space_height" />70% &nbsp;&nbsp;&nbsp;&nbsp;
+            </form>
+            </section>
+            <footer>
+                <button class="redactor_modal_btn redactor_btn_modal_close">取消</button>
+                <button id="redactor_space_btn" class="redactor_modal_btn redactor_modal_action_btn">插入</button>
+            </footer>
         </div>
       
         <script src="js/jquery-1.11.1.min.js"></script>
@@ -51,6 +256,12 @@
         <script src="redactor/9.2.2/redactor.js"></script>
         <script src="redactor/9.2.2/lang/zh_cn.js"></script> 
         <script src="js/draganddrop-new.js" type="text/javascript"></script>
+        <script src="redactor/9.2.2/plugins/modal/mymodal.js"></script>
+        <script src="redactor/9.2.2/plugins/advanced/chaptersplit.js"></script>
+        <script src="redactor/9.2.2/plugins/fontcolor/fontcolor.js"></script>
+        <script src="js/colorpicker.js"></script>
+        <script src="js/dropdownlist.js"></script>
+        <script src="js/globalfunction.js"></script>
         <script>
 
         $(function(){
@@ -64,7 +275,8 @@
                 css: 'css/iframe.css',
                 buttons: ['formatting', 'bold', 'italic', 'deleted', 'unorderedlist', 'orderedlist', 'outdent', 'indent',
                         'image', 'video', 'file', 'table', 'link',
-                        , 'alignment', 'horizontalrule'], // 'underline', 'alignleft', 'aligncenter', 'alignright', 'justify'           
+                        , 'alignment', 'horizontalrule'], // 'underline', 'alignleft', 'aligncenter', 'alignright', 'justify'
+                plugins: ['fontcolor', 'backcolor', 'modal_hr', 'modal_set', /*'modal_header', 'modal_p', */'modal_font_family', 'modal_font_size', 'modal_p_backcolor', 'modal_p_vertical', 'modal_page_break', 'modal_clear_p_style', 'modal_replace', 'modal_subscript', 'modal_mathml', 'modal_math_preview', 'modal_full_image', 'modal_space', 'modal_p_indents', 'modal_list', 'modal_p_group', 'modal_p_forced_not_indented', 'modal_phonetic'],           
                 initCallback: function(){
                     console.log('init!');
                     updateIframeHeight();
