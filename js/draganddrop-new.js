@@ -1,6 +1,6 @@
 var DragAndDrop = {};
 DragAndDrop.is_drag_in = false;
-DragAndDrop.forbidden_tag = ['tr','td','th','tbody','i','b'];
+DragAndDrop.forbidden_tag = ['tr','td','th','tbody','i','b','sup'];
 DragAndDrop.getIframeElem = function (event, ui, iframe_id) {
 	var elem = document.getElementById(iframe_id).contentDocument;
 	//console.log(event);
@@ -14,13 +14,13 @@ DragAndDrop.getIframeElem = function (event, ui, iframe_id) {
 	if(targetNode != null){
 	    targetNode = HTMLBlockDragView.rewriteTargetData_(targetNode, c, d);
 
-	    console.log(targetNode);
+	    //console.log(targetNode);
 
 	    var top = $(targetNode).offset().top;
 	    var left = $(targetNode).offset().left+pos.left;
 	    var height = $(targetNode).height();
         var tagName = targetNode.tagName.toLowerCase();
-        var width = $(targetNode).width();
+        var width = $(targetNode).outerWidth();
 	    //console.log({targettop:top,cusortop:d});
 	    var rate = (d - top) / height;
 
@@ -79,11 +79,12 @@ DragAndDrop.getElemByPos = function(event , iframe_id){
         targetNode = HTMLBlockDragView.rewriteTargetData_(targetNode, c, d);
 
         //console.log(targetNode);
+        //console.log($(targetNode));
 
         var top = $(targetNode).offset().top+pos.top;
         var left = $(targetNode).offset().left+pos.left;
         var height = $(targetNode).height();
-        var width = $(targetNode).width();
+        var width = $(targetNode).outerWidth();
         var tagName = targetNode.tagName.toLowerCase();
         return {
           top: top,
@@ -101,51 +102,6 @@ DragAndDrop.getElemByPos = function(event , iframe_id){
     }
 }
 
-DragAndDrop.getElemByPosss = function(event , ui, iframe_id){
-    var elem = document.getElementById(iframe_id).contentDocument;
-    //console.log(event);
-    var pos = $("#"+iframe_id).offset();
-    var c = event.offsetX,
-    d = event.offsetY;
-    var targetNode = elem.elementFromPoint(c,d);
-
-    //console.log(targetNode);
-
-    targetNode = this.filterHtmlTag(targetNode);
-    //console.log('after filterHtmlTag:');
-    //console.log(targetNode);
-    
-    if(targetNode != null ){
-        targetNode = HTMLBlockDragView.rewriteTargetData_(targetNode, c, d);
-
-        console.log(targetNode);
-
-        var top = $(targetNode).offset().top+pos.top;
-        var left = $(targetNode).offset().left+pos.left;
-        var height = $(targetNode).height();
-        var width = $(targetNode).width();
-        var tagName = targetNode.tagName.toLowerCase();
-
-        var rate = (d - top) / height;
-
-        var spos = rate >= 0.5 ? 'after' : 'before';
-
-        return {
-          position: spos,
-          target: targetNode,
-          tagName: tagName,
-          top: d+pos.top,
-          left: c+pos.left,
-          height: height,
-          width: width,
-          status: true
-        }
-    }else{
-       return {
-         status: false
-       } 
-    }
-}
 
 DragAndDrop.addMark = function (target) {
     var overlay = $('<div class="pattern-insertion-overlay" style="position: absolute; display:none; pointer-events: none; z-index:1000"></div>');
@@ -161,7 +117,7 @@ DragAndDrop.dragOver = function (event, ui, iframe_id) {
 
 	    //var html_mark = "<hr id='mark_position' class='divider_mark_position_abcd' style='border-bottom: 3px solid rgb(155, 187, 89)' >";
 
-	    console.log(data);
+	    //console.log(data);
 
 	    if(data.status){
             if(data.tagName === "body"){
