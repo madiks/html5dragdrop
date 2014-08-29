@@ -517,7 +517,7 @@ RedactorPlugins.modal_p_backcolor = {
 		if (!$(current).hasClass('redactor_box') && !$(current).hasClass('redactor_editor')) { //排除编辑器
 			$(current).each(function () {
 				this.style.setProperty( 'background-color', color, 'important' );
-				this.style.setProperty( 'padding', '0.8em' );
+				//this.style.setProperty( 'padding', '0.8em' );
 			});
 		}
 	}
