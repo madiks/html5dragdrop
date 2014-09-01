@@ -591,7 +591,7 @@ RedactorPlugins.modal_page_break = {
 		var html = '<p class="page-break-after-always" style="page-break-after: always;"></p>';
 		for (var i = 0; i < 5; i ++) {
 			parent = $(current).parent()[0];
-			if ($(parent).hasClass('redactor_editor')) {
+			if ($(parent).prop("tagName").toLowerCase() == 'body') {
 				$(current).after(html);
 				break;
 			}
