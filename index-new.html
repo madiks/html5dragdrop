@@ -348,10 +348,16 @@
             });
 
             function updateIframeHeight(){
-                console.log("set hight!");
-                var iframe_height = document.getElementById("rif").contentWindow.document.body.offsetHeight;
-                if(iframe_height > 500){
+                var iframe_height = document.getElementById("rif").contentWindow.document.body.scrollHeight;
+                console.log({geth:iframe_height});
+                var iheight = parseInt($("#rif").css("height"));
+                console.log({th:iheight});
+                if(iframe_height > iheight){
                     $("#rif").css("height", iframe_height+100);
+                    console.log("set hight!");
+                }else if(iheight-100 > iframe_height){
+                    $("#rif").css("height", iframe_height+100);
+                     console.log("set hight!");
                 }
                
             }
